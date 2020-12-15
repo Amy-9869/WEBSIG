@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+
+<html lang="pt-pt">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title> WEBSIG </title>
+        <link rel="stylesheet" type="text/css" href="paginapessoal5.css" />
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"/>  
+        <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="A.geojson"></script>
+        <script src="ED.geojson"></script>
+        <script src="F.geojson"></script>
+        <script src="M.geojson"></script>
+        <script src="MA.geojson"></script>
+        <script src="P.geojson"></script>
+        <script src="TA.geojson"></script>
+        <script src="susc_b.geojson"></script>
+        <script src="susc_bm.geojson"></script>
+        <script src="susc_ma.geojson"></script>
+        <script src="susc_a.geojson"></script>
+        <script src="susc_mta.geojson"></script>
+        <script src="PT.geojson"></script>
+        <script src="PF.geojson"></script>
+        <script src="PR.geojson"></script>
+        <script src="rossas.geojson"></script>
+        <script src="telhe.geojson"></script>
+        <script src="felgueira.geojson"></script>
+        <script src="escolas.geojson"></script>
+        <script src="saude.geojson"></script>
+        <script src="juntas.geojson"></script>
+        <style>
+            #mapDIV{
+                margin-left: 65px;
+                margin-top: 150px;
+                height: 750px;
+                width: 90%;
+                border: solid 1px black;
+            }
+
+            #mapDIV1{
+                margin-left: 65px;
+                margin-top: 150px;
+                height: 750px;
+                width: 90%;
+                border: solid 1px black;
+            }
+
+            #mapDIV2{
+                margin-left: 65px;
+                margin-top: 150px;
+                height: 750px;
+                width: 90%;
+                border: solid 1px black;
+            }
+        </style>
+    </head>
+
+    <header>
+        <div class="container">
+            <img src="imagens\terceira.jpg">
+            <label id="texto">"A geografia é o mundo e tudo o que nele há."</label>
+            <label id="texto2">Priscila Aranha</label>
+        </div>
+        <nav class="menu">
+                <a href="index.html"> SOBRE MIM </a>
+                <a href="Pg2.html"> CV E FORMAÇÃO</a>
+                <a href="Pg3.html"> PORTFÓLIO</a>
+                <a href="Pg4.html"> TRABALHOS DESENVOLVIDOS</a>
+                <a href="Pg5.html"> WEBSIG </a>
+                <a href="Pg6.html"> CONTATOS</a>
+        </nav>
+    </header>
+
+    <body>
+        <h1 id="t1">Ocupação do solo (COS2018) no município de Arouca</h1>
+        <div id='mapDIV'></div>
+        <h1 id="t2">Suscetibilidade aos incêndios rurais no município de Arouca</h1>
+        <div id='mapDIV1'></div>
+        <h1 id="t3">"Grande incêndio" de Arouca 2016</h1>
+        <div id='mapDIV2'></div>
+        
+        <script>
+        let map = L.map(document.getElementById('mapDIV'), {
+        center: [40.930343, -8.246089],
+        zoom: 12
+        });
+
+        let map1=L.map(document.getElementById('mapDIV1'), {
+        center: [40.930343, -8.246089],
+        zoom: 12
+        });
+
+        let map2=L.map(document.getElementById('mapDIV2'), {
+        center: [40.877367, -8.190274],
+        zoom: 12
+        });
+
+        //Base maps
+        let Esri_WorldImagery = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',);
+        let Esri_WorldTopoMap = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}', )
+
+        let Esri_WorldTopoMap_1 = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}', 
+      )
+
+        let Esri_WorldTopoMap_2 = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}', 
+           
+   )
+
+        Esri_WorldImagery.addTo(map);
+        Esri_WorldTopoMap.addTo(map);
+        Esri_WorldTopoMap_1.addTo(map1);
+        Esri_WorldTopoMap_2.addTo(map2);
+
+
+
+        // Add scalebar
+
+        let scale = L.control.scale()
+        scale.addTo(map);
+
+        let scale1 = L.control.scale()
+        scale1.addTo(map1);
+
+        let scale2 = L.control.scale()
+        scale2.addTo(map2);
+        // Add attribution
+        map.attributionControl.addAttribution('World Imagery');
+        map.attributionControl.addAttribution('Open Topo Map');
+        map1.attributionControl.addAttribution('Open Topo Map');
+        map2.attributionControl.addAttribution('Open Topo Map');
+
+
+        //COS2018 Arouca
+        // Territórios Artificializados
+        let territorios_a=L.geoJSON(territorios_artificializados,{
+            color:'#000000',
+            background:'#000000',
+            weight: 0.5,
+        });
+        territorios_a.bindTooltip('Territórios artificializados');
+        territorios_a.addTo(map)
+
+        //Agricultura
+        let Agricultura=L.geoJSON(agricultura,{
+            color: '#8B4513',
+            background:'#8B4513',
+            weight: 0.5,
+        });
+        Agricultura.bindTooltip('Agricultura');
+        Agricultura.addTo(map)
+
+        //Florestas
+        let Florestas=L.geoJSON(florestas,{
+            color: '#006400',
+            background:'#006400',
+            weight: 0.5,
+        });
+        Florestas.bindTooltip('Florestas');
+        Florestas.addTo(map)
+
+        //Pastagens
+        let Pastagens=L.geoJSON(pastagens,{
+            color: '#B8860B',
+            background:'#B8860B',
+            weight: 0.5,
+        });
+        Pastagens.bindTooltip('Pastagens');
+        Pastagens.addTo(map)
+
+        //Matos
+        let Matos=L.geoJSON(matos,{
+            color: '#ADFF2F',
+            background:'#ADFF2F',
+            weight: 0.5,
+        });
+        Matos.bindTooltip('Matos');
+        Matos.addTo(map)
+
+        //Espaços descobertos ou com pouca vegetação 
+        let Espaços_Descobertos=L.geoJSON(espaços_descobertos,{
+            color: '#FFD700',
+            background:'#FFD700',
+            weight: 0.5,
+        });
+        Espaços_Descobertos.bindTooltip('Espaços descobertos ou com pouca vegetação');
+        Espaços_Descobertos.addTo(map)
+
+        //Massas de água superficiais
+        let Massasdeagua=L.geoJSON(massas_agua,{
+            color: '#000080',
+            background:'#000080',
+            weight: 0.5,
+        });
+        Massasdeagua.bindTooltip('Massas de água superficiais');
+        Massasdeagua.addTo(map)
+
+        //Lat/Long 
+        let popup = L.popup();
+
+        function onMapClick(e) { 
+        popup
+        .setLatLng(e.latlng) 
+        .setContent("" + e.latlng.toString()) 
+        .openOn(map); }
+        map.on('click', onMapClick);
+
+        let legendCOS = L.control({ position: "bottomleft" });
+
+        legendCOS.onAdd = function(map) {
+        let divCOS = L.DomUtil.create("div", "legend");
+        divCOS.innerHTML += "<h4>Ocupação do solo (COS2018)</h4>";
+        divCOS.innerHTML += '<i style="background: #000000"></i><span> Territórios Artificializados </span><br>';
+        divCOS.innerHTML += '<i style="background: #8B4513"></i><span> Agricultura </span><br>';
+        divCOS.innerHTML += '<i style="background: #006400"></i><span> Florestas </span><br>';
+        divCOS.innerHTML += '<i style="background: #B8860B"></i><span> Pastagens </span><br>';
+        divCOS.innerHTML += '<i style="background: #ADFF2F"></i><span> Matos </span><br>';
+        divCOS.innerHTML += '<i style="background: #FFD700"></i><span> Espaços descobertos ou com pouca vegetação </span><br>';
+        divCOS.innerHTML += '<i style="background: #000080"></i><span> Massas de água superficiais </span><br>';
+
+
+        return divCOS;
+        };
+
+        legendCOS.addTo(map); 
+
+        let baseMaps = {
+            "Open Topo Map": Esri_WorldTopoMap_1,
+            'World Imagery': Esri_WorldImagery
+        };
+
+        let overlayMaps = {
+            "Territórios artificializados": territorios_a,
+            "Agricultura": Agricultura,
+            "Florestas": Florestas,
+            "Pastagens": Pastagens,
+            "Matos": Matos,
+            "Espaços descobertos ou com pouca vegetação": Espaços_Descobertos,
+            "Massas de água superficiais":Massasdeagua
+        };
+        L.control.layers(baseMaps, overlayMaps).addTo(map);
+        //Fim COS 
+
+
+        //Suscetibilidade aos incêndios rurais
+
+        let suscetibilidade_b=L.geoJSON(b,{
+            color: '#228B22',
+            background:'#228B22',
+            weight: 0.5,
+        });
+        suscetibilidade_b.bindTooltip('Baixa');
+        suscetibilidade_b.addTo(map1)  
+        suscetibilidade_b.bindPopup('<p><b>' + "Suscetibilidade baixa" + '</p></b> <p>' + "Área com declives até 5° e que pode ter ocupação do solo de culturas temporárias e permanentes, áreas agrícolas heterogéneas e zonas descobertas ou com pouca vegetação." + '</p>' +'<p><b>' + "Área total: " + '</b>' + "1 514 ha" + '</p>');  
+        
+        let suscetibilidade_bm=L.geoJSON(bm,{
+            color: '#8B8B00',
+            background:'#8B8B00',
+            weight: 0.5,
+        });
+        suscetibilidade_bm.bindTooltip('Moderada');
+        suscetibilidade_bm.addTo(map1)  
+        suscetibilidade_bm.bindPopup('<p><b>' + "Suscetibilidade baixa-moderada" + '</p></b> <p>' + "Área com declives entre os 10° e 15° e que pode ter ocupação do solo de culturas temporárias e permanentes, pastagens permanentes e áreas agrícolas heterogéneas." + '</p>'+'<p><b>' + "Área total: " + '</b>' + "3 786 ha" + '</p>');
+
+        let suscetibilidade_ma=L.geoJSON(ma,{
+            color: '#EEEE00',
+            background:'#EEEE00',
+            weight: 0.5,
+        });
+        suscetibilidade_ma.bindTooltip('Moderada');
+        suscetibilidade_ma.addTo(map1) 
+        suscetibilidade_ma.bindPopup('<p><b>' + "Suscetibilidade moderada" + '</p></b> <p>' + "Área com declives entre os 10° e 15° e que pode ter ocupação do solo de culturas temporárias e permanentes, pastagens permanentes e áreas agrícolas heterogéneas." + '</p>'+'<p><b>' + "Área total: " + '</b>' + "9 580 ha" + '</p>');
+
+        let suscetibilidade_a=L.geoJSON(a,{
+            color: '#CD8500',
+            background:'#CD8500',
+            weight: 0.5,
+        });
+        suscetibilidade_a.bindTooltip('Alta');
+        suscetibilidade_a.addTo(map1)
+        suscetibilidade_a.bindPopup('<p><b>' +"Suscetibilidade alta" + '</p></b> <p>' + "Área com declives entre os 15° e 20° e que pode ter ocupação do solo de florestas de folhosas, resinosas e mistas, matos e vegetação arbustiva e herbácea."+ '</p>'+'<p><b>' + "Área total: " + '</b>' + "6 288 ha" + '</p>');
+
+        let suscetibilidade_mta=L.geoJSON(mta,{
+            color: '#CD0000',
+            background:'#CD0000',
+            weight: 0.5,
+        });
+        suscetibilidade_mta.bindTooltip('Muito Alta');
+        suscetibilidade_mta.addTo(map1)
+        suscetibilidade_mta.bindPopup('<p><b>' + "Suscetibilidade muito alta" + '</p></b> <p>' + "Área com declives superiores a 20° e que pode ter ocupação do solo de florestas de folhosas, resinosas e mistas, matos e vegetação arbustiva e herbácea." + '</p>' +'<p><b>' + "Área total: " + '</b>' + "11 752 ha" + '</p>');
+        
+        //Escolas
+
+        let Icon1 = L.icon({
+            iconUrl: 'escola.png',
+            iconSize: [25, 25],
+            iconAnchor: [16, 37],
+            popupAnchor: [0, -28]
+            });
+
+        let Escolas = L.geoJson(esc, {
+            pointToLayer: function (feature, latlng) {
+                return L.marker(latlng, {icon: Icon1});
+            },
+            onEachFeature: function (feature, layer) { 
+                let nome = feature.properties.Name;
+                layer.bindPopup("<h1> " + nome + "</h1>"); 
+            }}).addTo(map1);
+            Escolas.bindTooltip('<h2>Escola</h2>');
+ 
+        //Unidades de Saúde
+
+        let Icon2 = L.icon({
+            iconUrl: 'hospital.png',
+            iconSize: [25, 25],
+            iconAnchor: [16, 37],
+            popupAnchor: [0, -28]
+            });
+
+        let Saude = L.geoJson(saude, {
+            pointToLayer: function (feature, latlng) {
+                return L.marker(latlng, {icon: Icon2});
+            },
+            onEachFeature: function (feature, layer) { 
+                let nome = feature.properties.Name;
+                layer.bindPopup("<h1> " + nome + "</h1>"); 
+            }}).addTo(map1);
+            Saude.bindTooltip('<h2>Unidade de Saúde</h2>');
+
+        //Juntas de freguesia
+
+        let Icon3 = L.icon({
+            iconUrl: 'juntas.png',
+            iconSize: [25, 25],
+            iconAnchor: [16, 37],
+            popupAnchor: [0, -28]
+            });
+
+        let Juntas = L.geoJson(juntas, {
+            pointToLayer: function (feature, latlng) {
+                return L.marker(latlng, {icon: Icon3});
+            },
+            onEachFeature: function (feature, layer) { 
+                let nome = feature.properties.Name;
+                layer.bindPopup("<h1> " + nome + "</h1>"); 
+            }}).addTo(map1);
+            Juntas.bindTooltip('<h2>Junta de Freguesia</h2>');
+
+       
+        let baseMaps1 = {
+            "Open Topo Map": Esri_WorldTopoMap_1,
+            'World Imagery': Esri_WorldImagery
+        };
+
+        let overlayMaps1 = {
+            "Suscetibilidade baixa": suscetibilidade_b,
+            "Suscetibilidade baixa-moderada": suscetibilidade_bm,
+            "Suscetibilidade moderada": suscetibilidade_ma,
+            "Suscetibilidade alta": suscetibilidade_a,
+            "Suscetibilidade muito alta": suscetibilidade_mta,
+            "Escolas": Escolas,
+            "Unidades de Saúde": Saude,
+            "Juntas de Freguesia":Juntas
+        };
+        L.control.layers(baseMaps1, overlayMaps1).addTo(map1);
+
+        // Legenda
+        let legend = L.control({ position: "bottomleft" });
+
+        legend.onAdd = function(map) {
+        let div = L.DomUtil.create("div", "legend");
+        div.innerHTML += "<h4>Suscetibilidade</h4>";
+        div.innerHTML += '<i style="background: #228B22"></i><span>Baixa </span><br>';
+        div.innerHTML += '<i style="background: #8B8B00"></i><span>Baixa-Moderada  </span><br>';
+        div.innerHTML += '<i style="background: #EEEE00"></i><span>Moderada  </span><br>';
+        div.innerHTML += '<i style="background: #CD8500"></i><span>Alta  </span><br>';
+        div.innerHTML += '<i style="background: #CD0000"></i><span>Muito alta  </span><br>';
+   
+       
+
+        return div;
+        };
+
+        legend.addTo(map1);            
+
+
+        let legend2 = L.control({ position: "bottomleft" });
+
+        legend2.onAdd = function(map) {
+        let div2 = L.DomUtil.create("div2", "legend2");
+        div2.innerHTML += '<img src="escola.png"></i><span>Escola</span><br>';
+        div2.innerHTML += '<img src="hospital.png"></i><span>Unidade de Saúde Familiar</span><br>';
+        div2.innerHTML += '<img src="juntas.png"></i><span>Junta de Freguesia</span><br>';
+
+        return div2;
+        };
+
+        legend2.addTo(map1); 
+        // Fim legenda
+        //Fim da suscetibilidade aos incêndios rurais
+
+        //Grande incêndio Arouca
+
+        let Rossas=L.geoJSON(r,{
+            color: '#FF0000',
+            background:'#FF0000',
+            weight: 0.5,
+        });
+        Rossas.bindTooltip('Incêndio da Encosta da Freita (Provisende de Baixo)');
+        Rossas.addTo(map2)
+        Rossas.bindPopup('<h1>' + "Incêndio da Encosta da Freita (Provisende de Baixo) " + '</h1><br>' + '<p><b>' + "Distrito: " + '</b>' + "Aveiro" + '</p><p><b>' + "Concelho: " + '</b>' + "Arouca" + '</p><p><b>'+ "Freguesia: " + '</b>'+ "Rossas" + '</p>'+ '<p> <b>' + "Data de início: " + '</b>' + "06/08/2016" + '</p>' + '<p><b>' + "Hora de início: " + '</b>' + "19:06:00" + '</p><p><b>' + "Causa: " + '</b>' + "Incendiarismo" + '</p>'+ '<p><b>' + "Área ardida total: " + '</b>' + "2 577 ha" + '</p>');
+    
+        let Telhe=L.geoJSON(t,{
+            color: '#8B0000',
+            background:'#8B0000',
+            weight: 0.5,
+        });
+        Telhe.bindTooltip('Incêndio de Telhe (Ribeira da Mourinha');
+        Telhe.addTo(map2)
+        Telhe.bindPopup('<h1>' + "Incêndio de Telhe (Ribeira da Mourinha) " + '</h1><br>' + '<p><b>' + "Distrito: " + '</b>' + "Aveiro" + '</p><p><b>' + "Concelho: " + '</b>' + "Arouca" + '</p><p><b>'+ "Freguesia: " + '</b>'+ "Janarde" + '</p>'+ '<p> <b>' + "Data de início: " + '</b>' + "08/08/2016" + '</p>' + '<p><b>' + "Hora de início: " + '</b>' + "14:35:00" + '</p><p><b>' + "Causa: " + '</b>' + "Indeterminada" + '</p>'+ '<p><b>' + "Área ardida total: " + '</b>' + "21 909 ha" + '</p>');
+
+        let Felgueira=L.geoJSON(f,{
+            color: '#FF7256',
+            background:'#FF7256',
+            weight: 0.5,
+        });
+        Felgueira.bindTooltip('Incêndio Felgueira (Ribeira de Paraduca)');
+        Felgueira.addTo(map2)
+        Felgueira.bindPopup('<h1>' + "Incêndio Felgueira (Ribeira de Paraduca) " + '</h1><br>' + '<p><b>' + "Distrito: " + '</b>' + "Aveiro" + '</p><p><b>' + "Concelho: " + '</b>' + "Vale de Cambra" + '</p><p><b>'+ "Freguesia: " + '</b>'+ "Arões" + '</p>'+ '<p> <b>' + "Data de início: " + '</b>' + "07/08/2016" + '</p>' + '<p><b>' + "Hora de início: " + '</b>' + "07:25:00" + '</p><p><b>' + "Causa: " + '</b>' + "Indeterminada" + '</p>'+ '<p><b>' + "Área ardida total: " + '</b>' + "984 ha" + '</p>');
+
+        let PT=L.geoJSON(pt,{
+            pointToLayer: function(feature, latlng){
+                return L.circleMarker(latlng, {radius:5, color: '#FF0000',
+                                                 fillOpacity:0.5,
+                                                });
+            },            
+        });
+        PT.bindTooltip('<h1>' + "Ponto de ignição" + '</h1><br>' + '<p><b>'+ "Local: " + '</b>' + "Telhe (Ribeira da Mourinha)" + '</p>');
+        PT.addTo(map2);
+
+        let PF=L.geoJSON(pf,{
+            pointToLayer: function(feature, latlng){
+                return L.circleMarker(latlng, {radius:5, color: '#FF0000',
+                                                 fillOpacity:0.5,
+                                                });
+            },            
+        });
+        PF.bindTooltip('<h1>' + "Ponto de ignição" + '</h1><br>' + '<p><b>'+ "Local: " + '</b>' + "Felgueira (Ribeira de Paraduca)" + '</p>');
+        PF.addTo(map2);
+
+        let PR=L.geoJSON(pr,{
+            pointToLayer: function(feature, latlng){
+                return L.circleMarker(latlng, {radius:5, color: '#FF0000',
+                                                 fillOpacity:0.5,
+                                                });
+            },            
+        });
+        PR.bindTooltip('<h1>' + "Ponto de ignição" + '</h1><br>' + '<p><b>'+ "Local: " + '</b>' + "Encosta da Serra da Freita (Provisende de Baixo)" + '</p>');
+        PR.addTo(map2);
+
+
+        let legendINC = L.control({ position: "bottomleft" });
+
+        legendINC.onAdd = function(map) {
+        let divINC = L.DomUtil.create("div", "legend");
+        divINC.innerHTML += '<i style="background: #FF0000"></i><span> Incêndio da Encosta da Freita (Provisende de Baixo) </span><br>';
+        divINC.innerHTML += '<i style="background: #FF7256"></i><span> Incêndio Felgueira (Ribeira de Paraduca) </span><br>';
+        divINC.innerHTML += '<i style="background: #8B0000"></i><span> Incêndio de Telhe (Ribeira da Mourinha) </span><br>';
+        divINC.innerHTML += '<img src="ponto.png"><span> Ponto de ignição </span><br>';
+
+
+
+        return divINC;
+        };
+
+        legendINC.addTo(map2);
+
+        let baseMaps_2 = {
+            "Open Topo Map": Esri_WorldTopoMap_1,
+        };
+
+        let overlayMaps_2 = {
+            "Incêndio da Encosta da Freita (Provisende de Baixo)": Rossas,
+            "Incêndio Felgueira (Ribeira de Paraduca)": Felgueira,
+            "Incêndio de Telhe (Ribeira da Mourinha)": Telhe,
+            "Ponto de ignição da Encosta da Freita":PR,
+            "Ponto de ignição de Felgueira":PF,
+            "Ponto de ignição de Telhe":PT
+        };
+        L.control.layers(baseMaps_2, overlayMaps_2).addTo(map2);
+        //Fim Mapa do "Grande Incêndio " de Arouca 2016
+              
+        </script>
+
+        <footer>
+            © 2020 Ângela Silva.
+        </footer>
+        
+    </body>
+</html>

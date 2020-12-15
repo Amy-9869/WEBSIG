@@ -1,0 +1,207 @@
+*{
+    margin: 0;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    font-size: 100%;
+    vertical-align: baseline;
+    background: transparent;
+}
+
+html{
+    box-sizing: content-box;
+}
+
+body {
+    margin:0;
+    background-color:#F5F5F5;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+  
+.menu {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    background-color: #F5F5F5;
+    top:0;
+    margin-top: 200px;
+    width: 100%;
+    position: absolute; 
+  }
+  
+.menu a {
+    float: left;
+    display: inline-block;
+    color: black;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    margin-left: 50px;
+    font-weight: bold;
+  }
+  
+.menu a:hover {
+    background-color:#333;
+  }
+  
+.container img {
+    height: 200px;
+    width: 100%;
+  }
+
+#texto {
+    position: absolute;
+    font-size: 20px;
+    right: 50px;
+    top: 70px;
+    color: black;
+    font-weight: bold;
+  }
+
+#texto2 {
+    position: absolute;
+    font-size: 10px;
+    right: 50px;
+    top: 95px;
+    color: black;
+    font-weight: bold;
+  }
+
+#cv{
+    position: absolute;
+    font-size: 16px;
+    top: 300px;
+    color: black;
+    position: absolute;
+    right: 16px;
+}
+
+#dw{
+    position: absolute;
+    right: 60px;
+    top: 320px;
+    color: blue;
+    font-weight: bold;  
+    font-size: 14px;
+}
+
+.curriculo button{
+    position: absolute;
+    right: 170px;
+    top: 300px;
+   
+}
+
+iframe{
+    margin-left: 5%;
+    margin-top: 150px;
+}
+
+h1{
+    position: absolute;
+    left: 185px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    font-size: 22px;
+}
+
+p{
+    text-align: center;
+}
+
+#formacao{
+    left: 160px;
+    top:850px;
+}
+
+div ul{
+    position: absolute; 
+    left:150px;
+    top:890px;
+    line-height: 4.0;
+}
+
+div ol{
+    position: absolute; 
+    left:100px;
+    line-height: 0.2;
+    list-style: circle;
+
+}
+
+#ano1{
+    position: absolute;
+    left: 250px;
+    top: 1075px;
+}
+
+table {
+    display:table; 
+    border-spacing: 2px;
+    width: 400px;
+    border: 1px solid black;
+}
+
+th, td{
+    padding: 2px;
+    text-align: center;
+    border: 1px solid black;
+ }
+
+.table1{
+    position: absolute;
+    float: left;
+    box-align:center;
+    left: 100px;
+    top: 1100px;
+     }
+
+#ano2{ 
+    position: absolute;
+    right: 250px;
+    top: 1075px;
+}
+
+.table2{
+    position: absolute;
+    float: right;
+    right: 100px;
+    top: 1100px;
+ }
+
+#info{
+    position: absolute;
+    left: 200px;
+    top:1500px;
+}
+
+#tecn{
+    position: absolute;
+    left: 900px;
+    top:1500px;
+    
+
+}
+
+.cinform ul{
+    position: absolute;
+    top:1550px;
+    left: 100px;
+    line-height: 1.5;
+}
+
+.ctecn ul {
+    position: absolute;
+    top:1550px;
+    left: 800px;
+    line-height: 1.5;
+}
+
+footer {
+    position: absolute;
+    top: 1800px;
+    right: 20px;
+    padding-bottom: 20px;
+    font-size: 10px;
+    color: black;
+  }
